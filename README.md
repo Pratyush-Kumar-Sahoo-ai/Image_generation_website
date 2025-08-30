@@ -1,73 +1,130 @@
-# Lumina Text-to-Image API
+# Lumina Text-to-Image API & Frontend
 
-A FastAPI-based service for generating images from text prompts using the Lumina-Image-2.0 model.
+A complete text-to-image generation system with a FastAPI backend and React frontend, featuring automated CI/CD deployment to Google Cloud Platform.
 
-## Features
+## 🚀 Features
 
+### Backend (FastAPI)
 - Text-to-image generation using Alpha-VLLM/Lumina-Image-2.0
 - Configurable image dimensions, guidance scale, and inference steps
 - Seed-based reproducible generation
 - RESTful API with automatic model loading
 
-## Prerequisites
+### Frontend (React)
+- Modern, responsive UI built with React and TypeScript
+- Real-time image generation with loading states
+- Parameter controls for fine-tuning generation
+- Image download functionality
+- Mobile-friendly design
+
+### CI/CD Pipeline
+- Automated testing and building
+- Deployment to Google Cloud Run
+- Docker containerization
+- GitHub Actions workflow
+
+## 📋 Prerequisites
 
 - Python 3.8+
-- CUDA-compatible GPU (recommended)
+- Node.js 18+
+- CUDA-compatible GPU (recommended for backend)
 - At least 8GB GPU memory
+- Google Cloud Platform account
+- Docker
 
-## Installation
+## 🛠️ Installation
 
-1. **Clone the repository and navigate to the Lumina directory:**
-   ```bash
-   cd repo_AI_somex/Diffusion_Models/Lumina
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   Or using conda:
-   ```bash
-   conda install -c conda-forge diffusers fairscale accelerate tensorboard transformers gradio torchdiffeq click torchvision
-   ```
-
-3. **Install FastAPI and uvicorn:**
-   ```bash
-   pip install fastapi uvicorn
-   ```
-
-## Running the API
-
-### Start the server:
+### 1. Clone the repository
 ```bash
+git clone <your-repo-url>
+cd Lumina
+```
+
+### 2. Backend Setup
+```bash
+# Activate your conda environment
+conda activate diffusion
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install FastAPI and uvicorn
+pip install fastapi uvicorn
+```
+
+### 3. Frontend Setup
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install Node.js dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+## 🚀 Running the Application
+
+### Backend API
+```bash
+# Start the FastAPI server
 uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at `http://localhost:8000`
-
-### API Documentation:
 - Interactive docs: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
-## Interactive Testing
+### Frontend
+```bash
+# In the frontend directory
+npm start
+```
 
-### Using the Web Interface:
-1. Open your browser and go to `http://localhost:8000/docs`
-2. Click on the `/generate` endpoint
-3. Click "Try it out"
-4. Enter your prompt and adjust parameters as needed
-5. Click "Execute" to generate an image
-6. The generated image will be displayed in the browser
+The frontend will be available at `http://localhost:3000`
 
-### Example Test:
-- **Prompt**: "A majestic dragon flying over a castle"
-- **Height**: 1024
-- **Width**: 1024
-- **Guidance Scale**: 4.0
-- **Num Inference Steps**: 30
+## 🏗️ CI/CD Setup
 
-## API Usage
+### 1. Google Cloud Platform Setup
+
+#### Create a GCP Project
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the following APIs:
+   - Cloud Run API
+   - Container Registry API
+   - Cloud Build API
+
+#### Create a Service Account
+1. Go to IAM & Admin > Service Accounts
+2. Create a new service account with the following roles:
+   - Cloud Run Admin
+   - Storage Admin
+   - Service Account User
+3. Create and download a JSON key file
+
+#### Enable Container Registry
+```bash
+gcloud auth configure-docker
+```
+
+### 2. GitHub Secrets Setup
+
+Add the following secrets to your GitHub repository (Settings > Secrets and variables > Actions):
+
+- `GCP_PROJECT_ID`: Your Google Cloud Project ID
+- `GCP_SA_KEY`: The entire content of your service account JSON key file
+
+### 3. Deploy
+
+The CI/CD pipeline will automatically:
+1. Run tests on every push and pull request
+2. Build the frontend for production
+3. Deploy to Google Cloud Run on main/master branch pushes
+4. Provide deployment URLs in pull request comments
+
+## 📖 API Usage
 
 ### Endpoint: `POST /generate`
 
@@ -96,53 +153,63 @@ Generates an image from a text prompt.
 #### Response:
 Returns a PNG image file.
 
-## Curl Commands
+## 🔧 Development
 
-### Basic image generation:
+### Frontend Development
 ```bash
-curl -X POST "http://localhost:8000/generate" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "A majestic dragon flying over a castle"}' \
-  --output generated_image.png
+cd frontend
+npm start          # Start development server
+npm run build      # Build for production
+npm test           # Run tests
 ```
 
-### Custom parameters:
+### Backend Development
 ```bash
-curl -X POST "http://localhost:8000/generate" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A futuristic cityscape at night",
-    "height": 768,
-    "width": 1024,
-    "guidance_scale": 7.5,
-    "num_inference_steps": 50,
-    "seed": 12345
-  }' \
-  --output futuristic_city.png
+# Install development dependencies
+pip install -r requirements.txt
+pip install pytest pytest-asyncio httpx
+
+# Run tests
+pytest
+
+# Start development server with auto-reload
+uvicorn api:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### High-quality generation:
+### Docker Development
 ```bash
-curl -X POST "http://localhost:8000/generate" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A detailed portrait of a wise old wizard with glowing eyes",
-    "height": 1024,
-    "width": 1024,
-    "guidance_scale": 8.0,
-    "num_inference_steps": 100
-  }' \
-  --output wizard_portrait.png
+# Build the frontend container
+docker build -t lumina-frontend .
+
+# Run locally
+docker run -p 8080:8080 lumina-frontend
 ```
 
-## Model Information
+## 🌐 Deployment
 
-- **Model**: Alpha-VLLM/Lumina-Image-2.0
-- **Framework**: Diffusers
-- **Precision**: bfloat16
-- **Optimization**: CPU offloading enabled
+### Manual Deployment to GCP
+```bash
+# Build and push Docker image
+docker build -t gcr.io/YOUR_PROJECT_ID/lumina-frontend:latest .
+docker push gcr.io/YOUR_PROJECT_ID/lumina-frontend:latest
 
-## Troubleshooting
+# Deploy to Cloud Run
+gcloud run deploy lumina-frontend \
+  --image gcr.io/YOUR_PROJECT_ID/lumina-frontend:latest \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080
+```
+
+### Environment Variables
+
+The frontend can be configured with environment variables:
+
+- `REACT_APP_API_URL`: Backend API URL (default: http://localhost:8000)
+- `REACT_APP_ENVIRONMENT`: Environment name (development/production)
+
+## 🐛 Troubleshooting
 
 ### Common Issues:
 
@@ -160,6 +227,16 @@ curl -X POST "http://localhost:8000/generate" \
    - Install CUDA-compatible PyTorch version
    - Check GPU driver compatibility
 
+4. **Frontend Build Issues:**
+   - Clear node_modules and reinstall: `rm -rf node_modules && npm install`
+   - Check Node.js version compatibility
+   - Verify all environment variables are set
+
+5. **Deployment Issues:**
+   - Verify GCP credentials and permissions
+   - Check GitHub secrets are properly configured
+   - Ensure Cloud Run API is enabled
+
 ### Performance Tips:
 
 - Use smaller image dimensions for faster generation
@@ -167,6 +244,21 @@ curl -X POST "http://localhost:8000/generate" \
 - Higher `guidance_scale` values produce more prompt-following images
 - Set a `seed` for reproducible results
 
-## License
+## 📝 License
 
-This project uses the Lumina-Image-2.0 model. Please refer to the model's license for usage terms. 
+This project uses the Lumina-Image-2.0 model. Please refer to the model's license for usage terms.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📞 Support
+
+For issues and questions:
+1. Check the troubleshooting section above
+2. Review the API documentation at `/docs`
+3. Open an issue on GitHub 
