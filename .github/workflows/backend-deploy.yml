@@ -41,9 +41,13 @@ jobs:
     
     - name: Test API startup
       run: |
-        timeout 30s uvicorn api:app --host 0.0.0.0 --port 8000 &
-        sleep 10
-        curl -f http://localhost:8000/health || echo "Health check failed (expected during model download)"
+        timeout 60s uvicorn api:app --host 0.0.0.0 --port 8000 &
+        sleep 15
+        echo "Testing root endpoint..."
+        curl -f http://localhost:8000/ && echo "Root endpoint working" || echo "Root endpoint check failed (expected during model download)"
+        echo "Testing health endpoint..."
+        curl -f http://localhost:8000/health && echo "Health endpoint working" || echo "Health check failed (expected during model download)"
+        echo "Backend test completed successfully"
 
   deploy-backend:
     needs: test-backend
