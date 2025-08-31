@@ -21,6 +21,9 @@ FROM nginx:alpine
 # Copy built app from builder stage
 COPY --from=builder /app/build /usr/share/nginx/html
 
+# Temporary: Copy test HTML file for debugging
+COPY test.html /usr/share/nginx/html/index.html
+
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 

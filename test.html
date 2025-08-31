@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .status {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Lumina Test Page</h1>
+        <p>This is a test page to verify the deployment pipeline is working.</p>
+        
+        <div class="status">
+            <h3>✅ Deployment Status</h3>
+            <p>Frontend deployment pipeline is working!</p>
+            <p>Backend: <a href="https://lumina-backend-cwms2mqttq-el.a.run.app/health" target="_blank" style="color: #ffd700;">Check Backend Health</a></p>
+        </div>
+        
+        <p>If you can see this page, the nginx configuration and deployment pipeline are working correctly.</p>
+    </div>
+</body>
+</html> 
