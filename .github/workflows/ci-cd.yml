@@ -63,12 +63,14 @@ jobs:
         cd frontend
         npm run build:prod
     
-    - name: Setup Google Cloud CLI
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v2
       with:
-        project_id: ${{ env.PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+    
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
     
     - name: Configure Docker for GCP
       run: |
