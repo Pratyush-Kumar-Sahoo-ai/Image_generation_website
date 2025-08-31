@@ -1,8 +1,8 @@
 # Minimal nginx setup for testing
 FROM nginx:alpine
 
-# Copy test HTML file
-COPY test.html /usr/share/nginx/html/index.html
+# Copy index HTML file
+COPY index.html /usr/share/nginx/html/index.html
 
 # Debug: List files to verify they exist
 RUN ls -la /usr/share/nginx/html/
