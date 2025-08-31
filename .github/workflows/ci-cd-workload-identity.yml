@@ -1,10 +1,14 @@
-name: CI/CD Pipeline (Workload Identity)
+name: CI/CD Pipeline (Workload Identity) - DISABLED
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+# on:
+#   push:
+#     branches: [ main, master ]
+#   pull_request:
+#     branches: [ main, master ]
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
 
 env:
   REGION: us-central1
