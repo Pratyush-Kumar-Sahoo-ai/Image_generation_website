@@ -32,12 +32,23 @@ class GenerateRequest(BaseModel):
 def load_model() -> None:
     global pipe
     try:
+        # Set memory optimization
+        import gc
+        gc.collect()
+        
         pipe = DiffusionPipeline.from_pretrained(
             "Alpha-VLLM/Lumina-Image-2.0",
             torch_dtype=torch.bfloat16,
             trust_remote_code=True,
+            low_cpu_mem_usage=True,
         )
         pipe.enable_model_cpu_offload()
+        
+        # Clear cache after loading
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            
     except Exception as e:
         raise RuntimeError(f"Failed to load pipeline: {e}")
 
