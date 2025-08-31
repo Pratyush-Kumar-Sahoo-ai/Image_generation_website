@@ -83,7 +83,7 @@ jobs:
           --region ${{ env.REGION }} \
           --allow-unauthenticated \
           --port 8000 \
-          --memory 8Gi \
+          --memory 16Gi \
           --cpu 4 \
           --gpu 1 \
           --gpu-type nvidia-l4 \
