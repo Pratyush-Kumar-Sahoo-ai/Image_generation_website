@@ -76,7 +76,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>🎨 Lumina Text-to-Image Generator</h1>
-        <p>Transform your imagination into stunning visuals</p>
+        <p>Transform your imagination into stunning visuals - v1.0.1</p>
       </header>
 
       <main className="App-main">
