@@ -66,7 +66,7 @@ describe('Lumina Frontend', () => {
 
   test('API URL field is present and editable', () => {
   render(<App />);
-    const apiUrlInput = screen.getByDisplayValue('http://localhost:8000');
+    const apiUrlInput = screen.getByDisplayValue('https://lumina-backend-cwms2mqttq-el.a.run.app');
     expect(apiUrlInput).toBeInTheDocument();
     
     fireEvent.change(apiUrlInput, { target: { value: 'http://api.example.com' } });
