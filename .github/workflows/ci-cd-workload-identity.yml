@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline (Workload Identity)
 
 on:
   push:
@@ -63,12 +63,15 @@ jobs:
         cd frontend
         npm run build:prod
     
-    - name: Setup Google Cloud CLI
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v2
       with:
-        project_id: ${{ env.PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+        workload_identity_provider: 'projects/${{ env.PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github'
+        service_account: 'lumina-cicd@${{ env.PROJECT_ID }}.iam.gserviceaccount.com'
+    
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
     
     - name: Configure Docker for GCP
       run: |
