@@ -84,7 +84,7 @@ jobs:
           --cpu 8 \
           --max-instances 2 \
           --set-env-vars "NODE_ENV=production,PYTHONUNBUFFERED=1" \
-          --timeout 7200 \
+          --timeout 3600 \
           --execution-environment gen2 \
           --cpu-boost
     
