@@ -14,6 +14,10 @@ app = FastAPI(title="Lumina Text-to-Image API")
 
 pipe: Optional[DiffusionPipeline] = None
 
+@app.get("/")
+def root():
+    return {"message": "Lumina API is running", "version": "1.0.1"}
+
 @app.get("/health")
 def health_check():
     if pipe is None:
@@ -30,8 +34,9 @@ class GenerateRequest(BaseModel):
     seed: Optional[int] = None
 
 
-@app.on_event("startup")
-def load_model() -> None:
+import threading
+
+def load_model_async():
     global pipe
     try:
         # Set memory optimization
@@ -65,6 +70,13 @@ def load_model() -> None:
         print(f"Failed to load pipeline: {e}")
         # Don't raise error, let the app start without model
         pipe = None
+
+@app.on_event("startup")
+def start_model_loading() -> None:
+    # Start model loading in a separate thread so the server starts immediately
+    thread = threading.Thread(target=load_model_async)
+    thread.daemon = True
+    thread.start()
 
 
 @app.post("/generate", response_class=Response)
