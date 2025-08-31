@@ -9,3 +9,5 @@ click
 torchvision
 fastapi
 uvicorn
+pydantic
+python-multipart

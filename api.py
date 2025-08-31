@@ -14,6 +14,10 @@ app = FastAPI(title="Lumina Text-to-Image API")
 
 pipe: Optional[DiffusionPipeline] = None
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "model_loaded": pipe is not None}
+
 
 class GenerateRequest(BaseModel):
     prompt: str
