@@ -261,4 +261,4 @@ This project uses the Lumina-Image-2.0 model. Please refer to the model's licens
 For issues and questions:
 1. Check the troubleshooting section above
 2. Review the API documentation at `/docs`
-3. Open an issue on GitHub 
+3. Open an issue on GitHub # Updated Sun Aug 31 12:31:07 IST 2025
