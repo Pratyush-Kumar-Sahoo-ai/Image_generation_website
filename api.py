@@ -58,8 +58,6 @@ def load_model_async():
                 torch_dtype=torch.bfloat16,
                 trust_remote_code=True,
                 low_cpu_mem_usage=True,
-                device_map="auto",
-                offload_folder="/tmp/model_offload",
             )
             pipe.enable_model_cpu_offload()
         except Exception as e:
