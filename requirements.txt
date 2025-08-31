@@ -10,4 +10,5 @@ torchvision
 fastapi
 uvicorn
 pydantic
-python-multipart# Backend deployment test - Sun Aug 31 13:05:25 IST 2025
+python-multipart
+# Backend deployment test - Sun Aug 31 13:05:25 IST 2025
