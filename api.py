@@ -16,7 +16,7 @@ pipe: Optional[DiffusionPipeline] = None
 
 @app.get("/")
 def root():
-    return {"message": "Lumina API is running", "version": "1.0.4"}
+    return {"message": "Lumina API is running", "version": "1.0.5"}
 
 @app.get("/health")
 def health_check():
@@ -54,10 +54,9 @@ def load_model_async():
         # Use GPU for faster model loading and inference
         try:
             pipe = DiffusionPipeline.from_pretrained(
-                "Alpha-VLLM/Lumina-Image-2.0",
-                torch_dtype=torch.bfloat16,
-                trust_remote_code=True,
-                device_map="auto",
+            "Alpha-VLLM/Lumina-Image-2.0",
+            torch_dtype=torch.bfloat16,
+            trust_remote_code=True,
             )
             print("Model loaded successfully on GPU!")
         except Exception as e:
@@ -67,7 +66,7 @@ def load_model_async():
             pipe = DiffusionPipeline.from_pretrained(
                 "runwayml/stable-diffusion-v1-5",
                 torch_dtype=torch.bfloat16,
-                device_map="auto",
+                device_map="cuda",
             )
         
         # Clear cache after loading
