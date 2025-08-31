@@ -86,7 +86,7 @@ jobs:
           --set-env-vars "NODE_ENV=production,PYTHONUNBUFFERED=1" \
           --timeout 7200 \
           --execution-environment gen2 \
-          --startup-cpu-boost
+          --cpu-boost
     
     - name: Get backend URL
       run: |
