@@ -72,3 +72,4 @@ def generate(req: GenerateRequest):
     image.save(buf, format="PNG")
     png_bytes = buf.getvalue()
     return Response(content=png_bytes, media_type="image/png") # Backend test - Sun Aug 31 12:54:40 IST 2025
+# Backend test fix - Sun Aug 31 13:17:01 IST 2025
