@@ -76,45 +76,7 @@ jobs:
     
     - name: Deploy to Cloud Run
       run: |
-        # Create a simple Dockerfile for serving static files
-        cat > Dockerfile << 'EOF'
-        FROM nginx:alpine
-        COPY frontend/build /usr/share/nginx/html
-        COPY nginx.conf /etc/nginx/nginx.conf
-        EXPOSE 8080
-        CMD ["nginx", "-g", "daemon off;"]
-        EOF
-        
-        # Create nginx configuration
-        cat > nginx.conf << 'EOF'
-        events {
-            worker_connections 1024;
-        }
-        
-        http {
-            include /etc/nginx/mime.types;
-            default_type application/octet-stream;
-            
-            server {
-                listen 8080;
-                server_name _;
-                root /usr/share/nginx/html;
-                index index.html;
-                
-                location / {
-                    try_files $uri $uri/ /index.html;
-                }
-                
-                # Cache static assets
-                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-                    expires 1y;
-                    add_header Cache-Control "public, immutable";
-                }
-            }
-        }
-        EOF
-        
-        # Build and push Docker image
+        # Build and push Docker image using our existing Dockerfile
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/lumina-frontend:${{ github.sha }} .
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lumina-frontend:${{ github.sha }}
         
