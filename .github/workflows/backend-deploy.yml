@@ -15,7 +15,7 @@ on:
       - 'Dockerfile.backend'
 
 env:
-  REGION: asia-south1
+  REGION: us-central1
   PROJECT_ID: velvety-arc-470617-v8
 
 jobs:
