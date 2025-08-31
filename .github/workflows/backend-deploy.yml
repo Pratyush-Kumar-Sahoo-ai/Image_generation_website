@@ -80,11 +80,12 @@ jobs:
           --region ${{ env.REGION }} \
           --allow-unauthenticated \
           --port 8000 \
-          --memory 4Gi \
-          --cpu 2 \
-          --max-instances 5 \
-          --set-env-vars "NODE_ENV=production" \
-          --timeout 900
+          --memory 8Gi \
+          --cpu 4 \
+          --max-instances 3 \
+          --set-env-vars "NODE_ENV=production,PYTHONUNBUFFERED=1" \
+          --timeout 1800 \
+          --execution-environment gen2
     
     - name: Get backend URL
       run: |

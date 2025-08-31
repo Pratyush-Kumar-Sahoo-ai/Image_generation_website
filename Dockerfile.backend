@@ -8,6 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -18,6 +19,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
 COPY api.py .
+
+# Set environment variables for better memory management
+ENV PYTHONUNBUFFERED=1
+ENV TRANSFORMERS_CACHE=/tmp/transformers_cache
+ENV HF_HOME=/tmp/huggingface_cache
 
 # Create a non-root user
 RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
@@ -31,4 +37,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Run the application
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"] # Backend deployment trigger - Sun Aug 31 13:00:10 IST 2025
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
