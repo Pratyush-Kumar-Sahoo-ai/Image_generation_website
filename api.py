@@ -16,7 +16,9 @@ pipe: Optional[DiffusionPipeline] = None
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy", "model_loaded": pipe is not None, "version": "1.0.1"}
+    if pipe is None:
+        return {"status": "starting", "model_loaded": False, "version": "1.0.1", "message": "Model is still loading"}
+    return {"status": "healthy", "model_loaded": True, "version": "1.0.1"}
 
 
 class GenerateRequest(BaseModel):
@@ -34,8 +36,16 @@ def load_model() -> None:
     try:
         # Set memory optimization
         import gc
+        import os
         gc.collect()
         
+        # Set environment variables for better caching
+        os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
+        os.environ['HF_HOME'] = '/tmp/huggingface_cache'
+        os.environ['HF_DATASETS_CACHE'] = '/tmp/datasets_cache'
+        os.environ['HF_METRICS_CACHE'] = '/tmp/metrics_cache'
+        
+        print("Starting model download...")
         pipe = DiffusionPipeline.from_pretrained(
             "Alpha-VLLM/Lumina-Image-2.0",
             torch_dtype=torch.bfloat16,
@@ -48,9 +58,13 @@ def load_model() -> None:
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
+        
+        print("Model loaded successfully!")
             
     except Exception as e:
-        raise RuntimeError(f"Failed to load pipeline: {e}")
+        print(f"Failed to load pipeline: {e}")
+        # Don't raise error, let the app start without model
+        pipe = None
 
 
 @app.post("/generate", response_class=Response)

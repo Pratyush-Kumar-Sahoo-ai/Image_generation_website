@@ -11,24 +11,26 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies with memory optimization
+# Install Python dependencies in virtual environment with memory optimization
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
 # Copy the application code
 COPY api.py .
-COPY preload_model.py .
 
 # Set environment variables for better memory management
 ENV PYTHONUNBUFFERED=1
 ENV TRANSFORMERS_CACHE=/tmp/transformers_cache
 ENV HF_HOME=/tmp/huggingface_cache
-
-# Pre-download the model during build to avoid startup delays
-RUN python preload_model.py
+ENV HF_DATASETS_CACHE=/tmp/datasets_cache
+ENV HF_METRICS_CACHE=/tmp/metrics_cache
 
 # Create a non-root user
 RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app

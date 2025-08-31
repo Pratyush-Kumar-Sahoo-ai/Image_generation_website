@@ -14,9 +14,20 @@ def preload_model():
         # Set memory optimization
         gc.collect()
         
-        # Set environment variables
+        # Set environment variables for better disk usage
         os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
         os.environ['HF_HOME'] = '/tmp/huggingface_cache'
+        os.environ['HF_DATASETS_CACHE'] = '/tmp/datasets_cache'
+        os.environ['HF_METRICS_CACHE'] = '/tmp/metrics_cache'
+        
+        # Check available disk space
+        import shutil
+        total, used, free = shutil.disk_usage('/tmp')
+        print(f'Available disk space: {free // (1024**3)} GB')
+        
+        if free < 10 * (1024**3):  # Less than 10GB
+            print('Warning: Low disk space, skipping model pre-download')
+            return False
         
         pipe = DiffusionPipeline.from_pretrained(
             'Alpha-VLLM/Lumina-Image-2.0',
