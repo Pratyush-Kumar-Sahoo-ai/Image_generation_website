@@ -51,15 +51,15 @@ def load_model_async():
         os.environ['HF_METRICS_CACHE'] = '/tmp/metrics_cache'
         
         print("Starting model download...")
-        # Try with a smaller model first for testing
+        # Use GPU for faster model loading and inference
         try:
             pipe = DiffusionPipeline.from_pretrained(
                 "Alpha-VLLM/Lumina-Image-2.0",
                 torch_dtype=torch.bfloat16,
                 trust_remote_code=True,
-                low_cpu_mem_usage=True,
+                device_map="auto",
             )
-            pipe.enable_model_cpu_offload()
+            print("Model loaded successfully on GPU!")
         except Exception as e:
             print(f"Failed to load Lumina model: {e}")
             print("Trying with smaller model...")
@@ -67,7 +67,7 @@ def load_model_async():
             pipe = DiffusionPipeline.from_pretrained(
                 "runwayml/stable-diffusion-v1-5",
                 torch_dtype=torch.bfloat16,
-                low_cpu_mem_usage=True,
+                device_map="auto",
             )
         
         # Clear cache after loading
@@ -99,19 +99,22 @@ def generate(req: GenerateRequest):
 
     generator = None
     if req.seed is not None:
-        generator = torch.Generator("cpu").manual_seed(int(req.seed))
+        # Use GPU generator if available
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        generator = torch.Generator(device=device).manual_seed(int(req.seed))
 
     try:
-        image = pipe(
-            req.prompt,
-            height=req.height,
-            width=req.width,
-            guidance_scale=req.guidance_scale,
-            num_inference_steps=req.num_inference_steps,
-            cfg_trunc_ratio=0.25,
-            cfg_normalization=True,
-            generator=generator,
-        ).images[0]
+        with torch.no_grad():
+            image = pipe(
+                req.prompt,
+                height=req.height,
+                width=req.width,
+                guidance_scale=req.guidance_scale,
+                num_inference_steps=req.num_inference_steps,
+                cfg_trunc_ratio=0.25,
+                cfg_normalization=True,
+                generator=generator,
+            ).images[0]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Generation failed: {e}")
 

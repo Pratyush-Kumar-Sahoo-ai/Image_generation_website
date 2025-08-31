@@ -83,13 +83,14 @@ jobs:
           --region ${{ env.REGION }} \
           --allow-unauthenticated \
           --port 8000 \
-          --memory 32Gi \
-          --cpu 8 \
+          --memory 8Gi \
+          --cpu 4 \
+          --gpu 1 \
+          --gpu-type nvidia-tesla-t4 \
           --max-instances 2 \
           --set-env-vars "NODE_ENV=production,PYTHONUNBUFFERED=1" \
           --timeout 3600 \
-          --execution-environment gen2 \
-          --cpu-boost
+          --execution-environment gen2
     
     - name: Get backend URL
       run: |

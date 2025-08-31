@@ -18,9 +18,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies in virtual environment with memory optimization
+# Install Python dependencies in virtual environment with GPU support
 RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+    pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 # Copy the application code
 COPY api.py .
