@@ -65,7 +65,7 @@ describe('Lumina Frontend', () => {
   });
 
   test('API URL field is present and editable', () => {
-    render(<App />);
+  render(<App />);
     const apiUrlInput = screen.getByDisplayValue('http://localhost:8000');
     expect(apiUrlInput).toBeInTheDocument();
     

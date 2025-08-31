@@ -31,7 +31,7 @@ gcloud config set project "$PROJECT_ID"
 
 # Enable required APIs
 echo "🔧 Enabling required APIs..."
-gcloud services enable cloudrun.googleapis.com
+#gcloud services enable cloudrun.googleapis.com
 gcloud services enable containerregistry.googleapis.com
 gcloud services enable cloudbuild.googleapis.com
 

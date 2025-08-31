@@ -35,25 +35,25 @@ A complete text-to-image generation system with a FastAPI backend and React fron
 ## 🛠️ Installation
 
 ### 1. Clone the repository
-```bash
+   ```bash
 git clone <your-repo-url>
 cd Lumina
-```
+   ```
 
 ### 2. Backend Setup
-```bash
+   ```bash
 # Activate your conda environment
 conda activate diffusion
 
 # Install Python dependencies
-pip install -r requirements.txt
+   pip install -r requirements.txt
 
 # Install FastAPI and uvicorn
 pip install fastapi uvicorn
-```
+   ```
 
 ### 3. Frontend Setup
-```bash
+   ```bash
 # Navigate to frontend directory
 cd frontend
 
@@ -62,7 +62,7 @@ npm install
 
 # Start development server
 npm start
-```
+   ```
 
 ## 🚀 Running the Application
 
@@ -246,7 +246,7 @@ The frontend can be configured with environment variables:
 
 ## 📝 License
 
-This project uses the Lumina-Image-2.0 model. Please refer to the model's license for usage terms.
+This project uses the Lumina-Image-2.0 model. Please refer to the model's license for usage terms. 
 
 ## 🤝 Contributing
 

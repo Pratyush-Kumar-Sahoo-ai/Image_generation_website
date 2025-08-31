@@ -161,7 +161,7 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
-}
+  }
 
 .btn-secondary {
   background: #f8f9fa;
@@ -267,7 +267,7 @@ body {
     grid-template-columns: 1fr;
     gap: 2rem;
     padding: 0 1rem;
-  }
+}
 
   .form-row {
     grid-template-columns: 1fr;
