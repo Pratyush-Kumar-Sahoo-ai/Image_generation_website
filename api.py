@@ -71,4 +71,4 @@ def generate(req: GenerateRequest):
     buf = io.BytesIO()
     image.save(buf, format="PNG")
     png_bytes = buf.getvalue()
-    return Response(content=png_bytes, media_type="image/png") 
+    return Response(content=png_bytes, media_type="image/png") # Backend test - Sun Aug 31 12:54:40 IST 2025
