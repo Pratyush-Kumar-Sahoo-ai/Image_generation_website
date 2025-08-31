@@ -51,13 +51,26 @@ def load_model_async():
         os.environ['HF_METRICS_CACHE'] = '/tmp/metrics_cache'
         
         print("Starting model download...")
-        pipe = DiffusionPipeline.from_pretrained(
-            "Alpha-VLLM/Lumina-Image-2.0",
-            torch_dtype=torch.bfloat16,
-            trust_remote_code=True,
-            low_cpu_mem_usage=True,
-        )
-        pipe.enable_model_cpu_offload()
+        # Try with a smaller model first for testing
+        try:
+            pipe = DiffusionPipeline.from_pretrained(
+                "Alpha-VLLM/Lumina-Image-2.0",
+                torch_dtype=torch.bfloat16,
+                trust_remote_code=True,
+                low_cpu_mem_usage=True,
+                device_map="auto",
+                offload_folder="/tmp/model_offload",
+            )
+            pipe.enable_model_cpu_offload()
+        except Exception as e:
+            print(f"Failed to load Lumina model: {e}")
+            print("Trying with smaller model...")
+            # Fallback to a smaller model
+            pipe = DiffusionPipeline.from_pretrained(
+                "runwayml/stable-diffusion-v1-5",
+                torch_dtype=torch.bfloat16,
+                low_cpu_mem_usage=True,
+            )
         
         # Clear cache after loading
         gc.collect()
