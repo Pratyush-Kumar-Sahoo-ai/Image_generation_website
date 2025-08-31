@@ -16,7 +16,7 @@ pipe: Optional[DiffusionPipeline] = None
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy", "model_loaded": pipe is not None}
+    return {"status": "healthy", "model_loaded": pipe is not None, "version": "1.0.1"}
 
 
 class GenerateRequest(BaseModel):
