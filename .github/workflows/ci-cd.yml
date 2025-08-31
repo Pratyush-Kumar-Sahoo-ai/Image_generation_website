@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 env:
-  REGION: us-central1
+  REGION: asia-south1
   PROJECT_ID: velvety-arc-470617-v8
 
 jobs:

@@ -10,7 +10,7 @@ if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" | grep -q
     exit 1
 fi
 
-REGION="us-central1"
+REGION="asia-south1"
 
 echo "🌍 Checking Cloud Run services in region: $REGION"
 echo ""
