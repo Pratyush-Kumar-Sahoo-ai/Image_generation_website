@@ -16,7 +16,7 @@ pipe: Optional[DiffusionPipeline] = None
 
 @app.get("/")
 def root():
-    return {"message": "Lumina API is running", "version": "1.0.2"}
+    return {"message": "Lumina API is running", "version": "1.0.3"}
 
 @app.get("/health")
 def health_check():
